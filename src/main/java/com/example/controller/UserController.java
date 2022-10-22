@@ -2,16 +2,11 @@ package com.example.controller;
 
 import java.util.List;
 
+import com.example.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.model.UserDto;
 import com.example.model.UserModel;
@@ -52,6 +47,19 @@ public class UserController {
 
 		List<UserModel> userModels = userService.allUsers(page);
 
+		return new ResponseEntity<List<UserModel>>(userModels, HttpStatus.OK);
+	}
+
+	@PutMapping("users/{userId}")
+	public ResponseEntity<String> updateUser(@PathVariable Integer userId, @RequestBody UserDto userDto){
+		userService.updateUserInformation(userId, userDto);
+
+		return new ResponseEntity<String>("User Updated successfully", HttpStatus.OK);
+	}
+
+	@GetMapping("query-users")
+	public ResponseEntity<List<UserModel>> allUsersWhoseEmailContains(@RequestParam(defaultValue = "") String queryEmail, @RequestParam(defaultValue = "1000") Long limit){
+		List<UserModel> userModels = userService.allUsersWhoseEmailContains(queryEmail, limit);
 		return new ResponseEntity<List<UserModel>>(userModels, HttpStatus.OK);
 	}
 }

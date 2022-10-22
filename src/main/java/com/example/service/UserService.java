@@ -15,4 +15,7 @@ public interface UserService {
 
 	List<UserModel> allUsers(Integer page);
 
+	void updateUserInformation(Integer userId, UserDto userDto);
+	List<UserModel> allUsersWhoseEmailContains(String characters, Long limit);
+
 }

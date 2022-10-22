@@ -11,6 +11,8 @@ import com.example.model.UserDto;
 import com.example.model.UserModel;
 import com.example.util.Mapper;
 
+import javax.transaction.Transactional;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -30,7 +32,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserModel getUser(Integer userId) {
 		User user = userDao.userById(userId);
-
 		return mapper.convert(user, UserModel.class);
 	}
 
@@ -43,5 +44,15 @@ public class UserServiceImpl implements UserService {
 	public List<UserModel> allUsers(Integer page) {
 
 		return mapper.convertToList(userDao.allUsers(page), UserModel.class);
+	}
+
+	@Override
+	public void updateUserInformation(Integer userId, UserDto userDto){
+		userDao.updateUser(userId, mapper.convert(userDto, User.class));
+	}
+
+	@Override
+	public List<UserModel> allUsersWhoseEmailContains(String characters, Long limit) {
+		return mapper.convertToList(userDao.allUsersWhoseEmailContains(characters,limit), UserModel.class);
 	}
 }

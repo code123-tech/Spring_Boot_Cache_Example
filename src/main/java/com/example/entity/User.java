@@ -2,27 +2,25 @@ package com.example.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@DynamicUpdate
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "users")
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
+	@GenericGenerator(name="seq",strategy = "increment")
 	@Column(name = "user_id")
 	private Integer userId;
 
@@ -37,5 +35,4 @@ public class User implements Serializable {
 
 	@Column(name = "mobile")
 	private String mobile;
-
 }
